@@ -12,16 +12,16 @@ COPY *.csproj ./
 #DESCARGAR TODOS LOS NUGET DEL PROYECTO
 RUN dotnet restore 
 COPY . .
-WORKDIR "/src/AppDockers"
+WORKDIR "/src/MvcDockersComics"
 #COMPILA EL PROYECTO EN LA IMAGEN DE DOCKER
-RUN dotnet build "/src/AppDockers.csproj" -c Release -o /app/build
+RUN dotnet build "/src/MvcDockersComics.csproj" -c Release -o /app/build
  
 #CREAMOS UN PUNTO PARA PUBLICAR LA IMAGEN EN EL DOCKER
 FROM build AS publish
-RUN dotnet publish "/src/AppDockers.csproj" -c Release -o /app/publish
+RUN dotnet publish "/src/MvcDockersComics.csproj" -c Release -o /app/publish
  
 #COPIA EL PROYECTO PUBLICADO DENTRO DE LA APP PARA SU EJECUCION
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "AppDockers.dll"]
+ENTRYPOINT ["dotnet", "MvcDockersComics.dll"]
